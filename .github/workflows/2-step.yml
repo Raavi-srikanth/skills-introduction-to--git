@@ -144,12 +144,15 @@ jobs:
               - description: "Created game docs commit"
                 passed: ${{ steps.check-for-game-docs-commit.outcome == 'success' }}
               - description: "Created developer docs commit"
-                passed: ${{ steps.check-for-game-docs-commit.outcome == 'success' }}
+                passed: ${{ steps.check-for-developer-docs-commit.outcome == 'success' }}
 
       # END: Check practical exercise
 
       - name: Fail job if not all checks passed
-        if: contains(steps.*.outcome, 'failure')
+        if: |
+          steps.check-for-initial-commit.outcome == 'failure' ||
+          steps.check-for-game-docs-commit.outcome == 'failure' ||
+          steps.check-for-developer-docs-commit.outcome == 'failure'
         run: exit 1
 
   post_next_step_content:
